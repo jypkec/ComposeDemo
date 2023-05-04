@@ -1,7 +1,6 @@
 package com.example.composedemo
 
 import android.os.Bundle
-import android.os.Message
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -9,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,7 +47,7 @@ fun DemoScreen(){
 
         Spacer(modifier = Modifier.height(150.dp))
 
-        DemoSldier(sliderPosition = sliderPosition, onPositionChange = handlePositionChange)
+        DemoSlider(sliderPosition = sliderPosition, onPositionChange = handlePositionChange)
 
         Text(
             style = MaterialTheme.typography.h2,
@@ -57,7 +57,7 @@ fun DemoScreen(){
 }
 
 @Composable
-fun DemoSldier(sliderPosition: Float, onPositionChange:(Float)->Unit){
+fun DemoSlider(sliderPosition: Float, onPositionChange:(Float)->Unit){
     Slider(
         modifier = Modifier.padding(10.dp),
         valueRange = 20f..40f,
@@ -73,9 +73,27 @@ fun DemoText(message: String, fontSize: Float){
     )
 
 }
+@Composable
+fun CustomList(items: List<String>){
+    Column{
+        for(item in items){
+            Text(text = item)
+            Divider(color= Color.DarkGray)
+        }
+    }
+}
 @Composable//애너테에션 annotation
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun CustomSwitch() {
+    val checked = remember { mutableStateOf(true) }
+    Column {
+        Switch(checked = checked.value, onCheckedChange ={checked.value=it} )
+        if(checked.value){
+            Text(text = "Switch is On")
+        }else{
+            Text(text = "Switch is Off")
+        }
+    }
+    //Text(text = "Hello $name!")
 }
 
 @Preview(showBackground = true)
@@ -83,5 +101,7 @@ fun Greeting(name: String) {
 fun Preview() {
     ComposeDemoTheme {
         DemoScreen()
+        CustomSwitch()
+        CustomList(listOf("1","2","3","4","5"))
     }
 }
